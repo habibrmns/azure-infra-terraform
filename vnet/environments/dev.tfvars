@@ -2,7 +2,7 @@ vnets = {
   kube-vnet = {
     vnet_name           = "kube-vnet"
     location            = "UAE North"
-    resource_group_name = "kube-rg-dev"
+    resource_group_name = "RG-habeeb"
     address_space       = ["10.0.0.0/16"]
 
     subnets = {
