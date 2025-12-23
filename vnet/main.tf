@@ -1,5 +1,5 @@
 module "vnet" {
-  source = "./modules/vnet"
+  source = "../modules/vnet"
   
     for_each = var.vnets
     vnet_name               = each.value.vnet_name
