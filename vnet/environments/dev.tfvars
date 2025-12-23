@@ -37,5 +37,5 @@ vnets = {
 
 
 resource_group_name  = "RG-habeeb"
-storage_account_name = "actionstfstate"   # must be lowercase
+storage_account_name = "actionstfstate"  
 container_name       = "tfstate"
