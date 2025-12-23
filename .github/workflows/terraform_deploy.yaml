@@ -58,7 +58,6 @@ jobs:
     name: Terraform Plan
     needs: detect
     if: needs.detect.outputs.stacks != '[]'
-    runs-on: ubuntu-latest
 
     strategy:
       matrix:
