@@ -1,0 +1,75 @@
+name: Terraform Plan
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  detect:
+    name: Detect stacks & environment
+    runs-on: ubuntu-latest
+    outputs:
+      stacks: ${{ steps.stacks.outputs.stacks }}
+      env: ${{ steps.env.outputs.env }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # 🔹 Detect environment from tfvars change
+      - name: Detect environment
+        id: env
+        run: |
+          ENV="dev"
+
+          if git diff --name-only origin/main...HEAD | grep -q "environments/prod.tfvars"; then
+            ENV="prod"
+          elif git diff --name-only origin/main...HEAD | grep -q "environments/qa.tfvars"; then
+            ENV="qa"
+          elif git diff --name-only origin/main...HEAD | grep -q "environments/dev.tfvars"; then
+            ENV="dev"
+          fi
+
+          echo "env=$ENV" >> $GITHUB_OUTPUT
+
+      # 🔹 Detect ALL changed Terraform stacks
+      - name: Detect Terraform stacks
+        id: stacks
+        run: |
+          STACKS=()
+
+          for dir in $(ls -d */); do
+            dir=${dir%/}
+
+            if [ "$dir" = "modules" ]; then
+              continue
+            fi
+
+            if [ -f "$dir/main.tf" ]; then
+              if git diff --name-only origin/main...HEAD | grep "^$dir/" > /dev/null; then
+                STACKS+=("\"$dir\"")
+              fi
+            fi
+          done
+
+          echo "stacks=[${STACKS[*]}]" >> $GITHUB_OUTPUT
+
+  plan:
+    name: Terraform Plan
+    needs: detect
+    if: needs.detect.outputs.stacks != '[]'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        stack: ${{ fromJson(needs.detect.outputs.stacks) }}
+
+    uses: habibrmns/githubactions/.github/workflows/tf_plan.yaml@main
+    with:
+      stack: ${{ matrix.stack }}
+      environment: ${{ needs.detect.outputs.env }}
+    secrets:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
