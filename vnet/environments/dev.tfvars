@@ -7,7 +7,7 @@ vnets = {
 
     subnets = {
       kube-subnet = {
-        address_prefixes = ["10.0.1.0/22"]
+        address_prefixes = ["10.0.0.0/22"]
       }
     }
 
@@ -30,6 +30,12 @@ vnets = {
     dns_servers = []
     tags = {
       env = "dev"
+      Creator = "habeeb"
     }
   }
 }
+
+
+resource_group_name  = "RG-habeeb"
+storage_account_name = "actionstfstate"   # must be lowercase
+container_name       = "tfstate"
