@@ -79,17 +79,6 @@ jobs:
 
           echo "stacks=[${STACKS[*]}]" >> $GITHUB_OUTPUT
 
-      - name: Select backend environment
-        id: backend
-        run: |
-          if [ "${{ needs.detect.outputs.env }}" = "dev" ]; then
-            echo "backend_env=qa" >> $GITHUB_OUTPUT
-          elif [ "${{ needs.detect.outputs.env }}" = "qa" ]; then
-            echo "backend_env=backend-qa" >> $GITHUB_OUTPUT
-          elif [ "${{ needs.detect.outputs.env }}" = "prod" ]; then
-            echo "backend_env=backend-prod" >> $GITHUB_OUTPUT
-          fi
-
 
 
   plan:
@@ -105,7 +94,6 @@ jobs:
     with:
       stack: ${{ matrix.stack }}
       environment: ${{ needs.detect.outputs.env }}
-      backend_env: ${{ needs.detect.outputs.backend_env }}
 
   apply:
     name: Terraform Apply
