@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0    
 
-      # 🔹 Detect environment from tfvars change
+
       - name: Detect environment
         id: env
         run: |
@@ -47,7 +47,7 @@ jobs:
           echo "env=$ENV" >> $GITHUB_OUTPUT
 
 
-      # 🔹 Detect ALL changed Terraform stacks
+
       - name: Detect Terraform stacks
         id: stacks
         run: |
