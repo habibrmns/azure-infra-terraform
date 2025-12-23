@@ -94,3 +94,20 @@ jobs:
     with:
       stack: ${{ matrix.stack }}
       environment: ${{ needs.detect.outputs.env }}
+
+  apply:
+    name: Terraform Apply
+    needs: [detect, plan]
+
+    if: >
+      github.ref == 'refs/heads/main' &&
+      needs.detect.outputs.stacks != '[]'
+
+    strategy:
+      matrix:
+        stack: ${{ fromJson(needs.detect.outputs.stacks) }}
+
+    uses: habibrmns/githubactions/.github/workflows/tf_apply.yaml@main
+    with:
+      stack: ${{ matrix.stack }}
+      environment: ${{ needs.detect.outputs.env }}
