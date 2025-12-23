@@ -105,6 +105,7 @@ jobs:
     with:
       stack: ${{ matrix.stack }}
       environment: ${{ needs.detect.outputs.env }}
+      backend_env: ${{ needs.detect.outputs.backend_env }}
 
   apply:
     name: Terraform Apply
