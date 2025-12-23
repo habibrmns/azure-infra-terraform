@@ -38,21 +38,30 @@ jobs:
         run: |
           STACKS=()
 
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            DIFF_RANGE="origin/${{ github.base_ref }}...HEAD"
+          else
+            DIFF_RANGE="HEAD~1...HEAD"
+          fi
+
+          CHANGED_FILES=$(git diff --name-only $DIFF_RANGE)
+
           for dir in $(ls -d */); do
             dir=${dir%/}
 
+            # Skip shared modules
             if [ "$dir" = "modules" ]; then
               continue
             fi
 
-            if [ -f "$dir/main.tf" ]; then
-              if git diff --name-only origin/main...HEAD | grep "^$dir/" > /dev/null; then
-                STACKS+=("\"$dir\"")
-              fi
+            # Detect stack if ANY file inside the stack changed
+            if echo "$CHANGED_FILES" | grep -q "^$dir/"; then
+              STACKS+=("\"$dir\"")
             fi
           done
 
           echo "stacks=[${STACKS[*]}]" >> $GITHUB_OUTPUT
+
 
   plan:
     name: Terraform Plan
