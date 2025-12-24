@@ -5,13 +5,11 @@ terraform {
       version = ">= 4.25.0"
     }
   }
+
+  backend "azurerm" {}
 }
 
 provider "azurerm" {
   features {}
   use_oidc = true
-}
-
-terraform {
-  backend "azurerm" {}
 }
