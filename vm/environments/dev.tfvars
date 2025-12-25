@@ -1,5 +1,5 @@
 vms ={
-    master-kube={
+    bastion={
 
         vnet_name           = "kube-vnet"
         subnet_name         = "kube-subnet"
