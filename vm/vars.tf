@@ -10,6 +10,5 @@ variable "vms" {
     publisher            = string
     offer                = string
     sku                  = string
-    version              = string
   }))
 }

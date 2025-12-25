@@ -12,5 +12,4 @@ module "vm" {
     publisher            = each.value.publisher
     offer                = each.value.offer
     sku                  = each.value.sku
-    version              = each.value.version
 }
