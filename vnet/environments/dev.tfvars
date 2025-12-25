@@ -29,7 +29,6 @@ vnets = {
         destination_address_prefix = "34.171.58.153/32"
       }
     ]
-
     dns_servers = []
     tags = {
       env = "dev"
