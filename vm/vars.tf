@@ -11,5 +11,13 @@ variable "vms" {
     offer                = string
     sku                  = string
     public_ip            = optional(bool, false)
+    os_disk_type         = string
+    disk_size            = number
+    data_disks = optional(list(object({
+      name    = string
+      size_gb = number
+      type    = optional(string, "StandardSSD_LRS")
+      lun     = number
+    })), [])
   }))
 }

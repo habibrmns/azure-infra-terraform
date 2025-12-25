@@ -52,7 +52,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   os_disk {
     caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
+    storage_account_type = var.os_disk_type
+    disk_size_gb = var.disk_size
   }
 
   source_image_reference {
@@ -61,4 +62,27 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = var.sku
     version   = "latest"
   }
+}
+
+resource "azurerm_managed_disk" "data_disk" {
+  for_each = {
+    for disk in var.data_disks : disk.name => disk
+  }
+
+  name                 = each.value.name
+  location             = var.location
+  resource_group_name  = var.resource_group_name
+  storage_account_type = each.value.type
+  disk_size_gb         = each.value.size_gb
+  create_option        = "Empty"
+}
+
+
+resource "azurerm_virtual_machine_data_disk_attachment" "attach" {
+  for_each = azurerm_managed_disk.data_disk
+
+  managed_disk_id    = each.value.id
+  virtual_machine_id = azurerm_linux_virtual_machine.vm.id
+  lun                = each.value.lun
+  caching            = "ReadWrite"
 }

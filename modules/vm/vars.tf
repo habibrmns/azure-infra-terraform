@@ -53,3 +53,23 @@ variable "public_ip" {
   description = "Whether to attach a public IP to the VM"
   type        = bool
 }
+
+variable "os_disk_type" {
+  description = "The type of OS Disk to use for the Virtual Machine."
+  type        = string
+}
+
+variable "disk_size" {
+  description = "The size of the OS Disk in GB."
+  type        = number
+}
+
+variable "data_disks" {
+  description = "Optional list of data disks"
+  type = list(object({
+    name    = string
+    size_gb = number
+    type    = string
+    lun     = number
+  }))
+}
