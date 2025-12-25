@@ -9,6 +9,17 @@ data "azurerm_subnet" "subnet" {
   resource_group_name = var.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet.name
 }
+
+resource "azurerm_public_ip" "pip" {
+  count               = var.public_ip ? 1 : 0
+  name                = "${var.vm_name}-pip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
+
 resource "azurerm_network_interface" "nic" {
   name                = "${var.vm_name}-nic"
   location            = var.location
@@ -16,9 +27,12 @@ resource "azurerm_network_interface" "nic" {
   ip_configuration {
     name                          = "${var.vnet_name}-config"
     subnet_id                     = data.azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Static"
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = var.public_ip ? azurerm_public_ip.pip[0].id : null
+
   }
 }
+
 
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = var.vm_name

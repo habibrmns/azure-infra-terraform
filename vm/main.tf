@@ -12,4 +12,5 @@ module "vm" {
     publisher            = each.value.publisher
     offer                = each.value.offer
     sku                  = each.value.sku
+    public_ip            = lookup(each.value, "public_ip", false)
 }

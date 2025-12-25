@@ -10,5 +10,6 @@ variable "vms" {
     publisher            = string
     offer                = string
     sku                  = string
+    public_ip            = optional(bool, false)
   }))
 }

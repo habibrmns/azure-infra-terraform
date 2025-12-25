@@ -48,3 +48,8 @@ variable "offer" {
 variable "sku" {
   type = string
 }
+
+variable "public_ip" {
+  description = "Whether to attach a public IP to the VM"
+  type        = bool
+}
