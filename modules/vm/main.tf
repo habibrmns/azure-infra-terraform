@@ -17,6 +17,7 @@ resource "azurerm_public_ip" "pip" {
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
+  tags = var.tags
 }
 
 
@@ -31,6 +32,7 @@ resource "azurerm_network_interface" "nic" {
     public_ip_address_id = var.public_ip ? azurerm_public_ip.pip[0].id : null
 
   }
+  tags = var.tags
 }
 
 
@@ -62,6 +64,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = var.sku
     version   = "latest"
   }
+  tags = var.tags
 }
 
 resource "azurerm_managed_disk" "data_disk" {
@@ -75,6 +78,7 @@ resource "azurerm_managed_disk" "data_disk" {
   storage_account_type = each.value.type
   disk_size_gb         = each.value.size_gb
   create_option        = "Empty"
+  tags = var.tags
 }
 
 

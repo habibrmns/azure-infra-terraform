@@ -16,5 +16,6 @@ module "vm" {
     os_disk_type         = lookup(each.value, "os_disk_type", "StandardSSD_LRS")
     disk_size            = lookup(each.value, "disk_size", 30)
     data_disks           = lookup(each.value, "data_disks", [])
+    tags = each.value.tags
 
 }

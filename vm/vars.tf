@@ -12,6 +12,7 @@ variable "vms" {
     sku                  = string
     public_ip            = optional(bool, false)
     os_disk_type         = string
+    tags                    = map(string)
     disk_size            = number
     data_disks = optional(list(object({
       name    = string
