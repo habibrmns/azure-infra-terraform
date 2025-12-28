@@ -30,5 +30,4 @@ vms ={
         os_disk_type        = "StandardSSD_LRS"
         disk_size           = 50
     },
-
 }
