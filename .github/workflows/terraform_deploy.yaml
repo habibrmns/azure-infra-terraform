@@ -52,7 +52,6 @@ jobs:
         id: stacks
         run: |
           STACKS=()
-
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             DIFF_RANGE="origin/${{ github.base_ref }}...HEAD"
           else
@@ -67,17 +66,23 @@ jobs:
 
           for dir in $(ls -d */); do
             dir=${dir%/}
-
             if [ "$dir" = "modules" ]; then
               continue
             fi
-
             if echo "$CHANGED_FILES" | grep -q "^$dir/"; then
-              STACKS+=("\"$dir\"")
+              STACKS+=("$dir")
             fi
           done
 
-          echo "stacks=[${STACKS[*]}]" >> $GITHUB_OUTPUT
+          # Convert Bash array → valid JSON array
+          if [ ${#STACKS[@]} -eq 0 ]; then
+            JSON_STACKS="[]"
+          else
+            JSON_STACKS=$(printf '%s\n' "${STACKS[@]}" | jq -R . | jq -s .)
+          fi
+
+          echo "stacks=$JSON_STACKS" >> $GITHUB_OUTPUT
+
 
 
 
