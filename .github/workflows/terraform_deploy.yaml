@@ -78,7 +78,7 @@ jobs:
           if [ ${#STACKS[@]} -eq 0 ]; then
             JSON_STACKS="[]"
           else
-            JSON_STACKS=$(printf '%s\n' "${STACKS[@]}" | jq -R . | jq -s .)
+            JSON_STACKS=$(printf '%s\n' "${STACKS[@]}" | jq -R . | jq -s -c .)
           fi
 
           echo "stacks=$JSON_STACKS" >> $GITHUB_OUTPUT
