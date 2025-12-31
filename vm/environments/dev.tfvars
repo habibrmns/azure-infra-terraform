@@ -40,7 +40,6 @@ vms ={
         }
     },
     kube-node-2={
-
         vnet_name           = "kube-vnet"
         subnet_name         = "kube-subnet"
         resource_group_name = "RG-habeeb"
