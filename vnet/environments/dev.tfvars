@@ -13,7 +13,6 @@ vnets = {
         address_prefixes = ["10.0.4.0/22"]
       }
     }
-
     nsg_name = "kube-nsg"
     nsg_rules = [
       {
