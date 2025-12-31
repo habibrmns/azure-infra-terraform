@@ -15,7 +15,6 @@ vnets = {
     }
 
     nsg_name = "kube-nsg"
-
     nsg_rules = [
       {
         name                       = "Allow-SSH"

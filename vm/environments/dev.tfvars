@@ -58,5 +58,5 @@ vms ={
             Creator = "Habeeb"
             Project     = "KubernetesCluster"
         }
-    },
+    }
 }
